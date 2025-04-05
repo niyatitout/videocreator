@@ -1,76 +1,216 @@
-<div class="auth-page">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8 col-lg-6">
-        <div class="auth-card card shadow">
-          <div class="card-body p-5">
-            <div class="text-center mb-5">
-              <h2 class="auth-title">Create Your Account</h2>
-              <p class="auth-subtitle">Start creating amazing videos today</p>
-            </div>
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Header -->
+    <div class="auth-header">
+      <h1>VideoCreator</h1>
+      <h2>Join us today</h2>
+      <p>Create your account to start editing</p>
+    </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "auth-form" }) do |f| %>
-              <%= render "devise/shared/error_messages", resource: resource %>
+    <!-- Form -->
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "auth-form" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-              <div class="mb-4">
-                <%= f.label :email, class: "form-label" %>
-                <div class="input-group">
-                  <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                  <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Enter your email" %>
-                </div>
-              </div>
-
-              <div class="mb-4">
-                <%= f.label :password, class: "form-label" %>
-                <div class="input-group">
-                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                  <%= f.password_field :password, autocomplete: "new-password", class: "form-control", placeholder: "Create a password" %>
-                </div>
-                <% if @minimum_password_length %>
-                  <small class="form-text text-muted">(<%= @minimum_password_length %> characters minimum)</small>
-                <% end %>
-              </div>
-
-              <div class="mb-4">
-                <%= f.label :password_confirmation, class: "form-label" %>
-                <div class="input-group">
-                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                  <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", placeholder: "Confirm your password" %>
-                </div>
-              </div>
-
-              <div class="mb-4 form-check">
-                <input type="checkbox" class="form-check-input" id="termsCheck" required>
-                <label class="form-check-label" for="termsCheck">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
-              </div>
-
-              <div class="d-grid mb-4">
-                <%= f.submit "Sign Up", class: "btn btn-primary-custom btn-lg" %>
-              </div>
-            <% end %>
-
-            <div class="text-center">
-              <p class="mb-0">Already have an account? <%= link_to "Log in", new_session_path(resource_name), class: "auth-link" %></p>
-            </div>
-
-            <div class="auth-divider">
-              <span>or</span>
-            </div>
-
-            <div class="social-auth text-center mt-4">
-              <p class="mb-3">Sign up with</p>
-              <div class="d-flex justify-content-center gap-3">
-                <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><i class="fab fa-google"></i></a>
-                <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><i class="fab fa-linkedin-in"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
+      <!-- Email -->
+      <div class="input-group">
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", required: true %>
       </div>
+
+      <!-- Password -->
+      <div class="input-group">
+        <%= f.password_field :password, autocomplete: "new-password", placeholder: "Password (min 8 characters)", required: true %>
+        <% if @minimum_password_length %>
+          <small class="form-text">(<%= @minimum_password_length %> characters minimum)</small>
+        <% end %>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="input-group">
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Confirm Password", required: true %>
+      </div>
+
+      <!-- Terms Checkbox -->
+      <div class="checkbox-group">
+        <input type="checkbox" id="terms" required>
+        <label for="terms">I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></label>
+      </div>
+
+      <!-- Submit Button -->
+      <%= f.submit "Create Account", class: "btn-primary" %>
+    <% end %>
+
+    <!-- Divider -->
+    <div class="divider">
+      <span>or continue with</span>
+    </div>
+
+    <!-- Social Login -->
+    <div class="social-login">
+      <%# <%= link_to "Sign up with Google", user_google_oauth2_omniauth_authorize_path, class: "btn-social" %> %>
+    </div>
+
+    <!-- Login Link -->
+    <div class="auth-footer">
+      Already have an account? <%= link_to "Sign in", new_session_path(resource_name) %>
     </div>
   </div>
 </div>
 
-<%= render "devise/shared/background_animation" %>
+<style>
+/* Base Styles */
+.auth-container {
+  background-color: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Header */
+.auth-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.auth-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.auth-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.auth-header p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* Form */
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #94a3b8;
+}
+
+/* Checkbox */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+.checkbox-group input {
+  margin-right: 8px;
+}
+
+.checkbox-group a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+/* Button */
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+/* Divider */
+.divider {
+  position: relative;
+  margin: 24px 0;
+  text-align: center;
+}
+
+.divider span {
+  background: white;
+  padding: 0 10px;
+  color: #94a3b8;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.divider:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e2e8f0;
+  z-index: 0;
+}
+
+/* Social Login */
+.btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.btn-social:hover {
+  background: #f8fafc;
+}
+
+/* Footer */
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.auth-footer a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+</style>
