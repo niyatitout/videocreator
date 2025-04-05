@@ -1,0 +1,158 @@
+<style>
+  /* Auth Pages */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.auth-card {
+  border-radius: 15px;
+  border: none;
+  position: relative;
+  z-index: 2;
+  background: white;
+}
+
+.auth-title {
+  font-weight: 700;
+  color: var(--dark-color);
+  margin-bottom: 10px;
+}
+
+.auth-subtitle {
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+.auth-form .form-label {
+  font-weight: 500;
+  color: var(--dark-color);
+}
+
+.auth-form .input-group-text {
+  background-color: #f8f9fa;
+  border-right: none;
+}
+
+.auth-form .form-control {
+  border-left: none;
+  padding-left: 0;
+}
+
+.auth-form .form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
+}
+
+.auth-divider {
+  position: relative;
+  margin: 30px 0;
+  text-align: center;
+}
+
+.auth-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #e9ecef;
+  z-index: -1;
+}
+
+.auth-divider span {
+  display: inline-block;
+  padding: 0 15px;
+  background-color: white;
+  color: #6c757d;
+}
+
+.social-btn {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-link {
+  color: var(--primary-color);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+/* Background Animation */
+.auth-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(108, 92, 231, 0.1);
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  top: -100px;
+  right: -100px;
+}
+
+.shape-2 {
+  width: 200px;
+  height: 200px;
+  bottom: -50px;
+  left: -50px;
+}
+
+.shape-3 {
+  width: 150px;
+  height: 150px;
+  top: 30%;
+  left: 30%;
+}
+
+.shape-4 {
+  width: 100px;
+  height: 100px;
+  bottom: 20%;
+  right: 20%;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .auth-page {
+    padding: 40px 0;
+  }
+  
+  .auth-card {
+    padding: 30px 20px;
+  }
+}
+</style>
+
+
+
+<div class="auth-animation">
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
+  <div class="shape shape-3"></div>
+  <div class="shape shape-4"></div>
+</div>

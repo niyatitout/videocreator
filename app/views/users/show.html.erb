@@ -1,0 +1,65 @@
+<div class="profile-container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="profile-sidebar">
+        <div class="profile-userpic text-center">
+          <%= image_tag @user.avatar.url || 'default-avatar.jpg', class: 'img-responsive rounded-circle', alt: 'User Avatar' %>
+          <h3 class="profile-username"><%= @user.name || @user.email %></h3>
+          <p class="profile-user-title"><%= @user.title %></p>
+        </div>
+        
+        <div class="profile-usermenu">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <%= link_to 'Dashboard', dashboard_users_path, class: 'nav-link active' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'Edit Profile', edit_user_path(@user), class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'My Videos', '#', class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'Account Settings', edit_user_registration_path, class: 'nav-link' %>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-8">
+      <div class="profile-content">
+        <h2>Profile Information</h2>
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Email:</strong> <%= @user.email %></p>
+            <p><strong>Joined:</strong> <%= @user.created_at.strftime("%B %d, %Y") %></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Last Login:</strong> <%= @user.last_sign_in_at ? @user.last_sign_in_at.strftime("%B %d, %Y at %H:%M") : 'Never' %></p>
+            <p><strong>Videos Created:</strong> <%= @user.videos.count %></p>
+          </div>
+        </div>
+        
+        <div class="recent-activity mt-5">
+          <h3>Recent Activity</h3>
+          <% if @recent_videos.any? %>
+            <div class="list-group">
+              <% @recent_videos.each do |video| %>
+                <a href="#" class="list-group-item list-group-item-action">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1"><%= video.title %></h5>
+                    <small><%= time_ago_in_words(video.created_at) %> ago</small>
+                  </div>
+                  <p class="mb-1"><%= truncate(video.description, length: 100) %></p>
+                </a>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="alert alert-info">No recent activity yet.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

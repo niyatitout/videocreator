@@ -1,0 +1,76 @@
+<div class="auth-page">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="auth-card card shadow">
+          <div class="card-body p-5">
+            <div class="text-center mb-5">
+              <h2 class="auth-title">Create Your Account</h2>
+              <p class="auth-subtitle">Start creating amazing videos today</p>
+            </div>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "auth-form" }) do |f| %>
+              <%= render "devise/shared/error_messages", resource: resource %>
+
+              <div class="mb-4">
+                <%= f.label :email, class: "form-label" %>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                  <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Enter your email" %>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <%= f.label :password, class: "form-label" %>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                  <%= f.password_field :password, autocomplete: "new-password", class: "form-control", placeholder: "Create a password" %>
+                </div>
+                <% if @minimum_password_length %>
+                  <small class="form-text text-muted">(<%= @minimum_password_length %> characters minimum)</small>
+                <% end %>
+              </div>
+
+              <div class="mb-4">
+                <%= f.label :password_confirmation, class: "form-label" %>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                  <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", placeholder: "Confirm your password" %>
+                </div>
+              </div>
+
+              <div class="mb-4 form-check">
+                <input type="checkbox" class="form-check-input" id="termsCheck" required>
+                <label class="form-check-label" for="termsCheck">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+              </div>
+
+              <div class="d-grid mb-4">
+                <%= f.submit "Sign Up", class: "btn btn-primary-custom btn-lg" %>
+              </div>
+            <% end %>
+
+            <div class="text-center">
+              <p class="mb-0">Already have an account? <%= link_to "Log in", new_session_path(resource_name), class: "auth-link" %></p>
+            </div>
+
+            <div class="auth-divider">
+              <span>or</span>
+            </div>
+
+            <div class="social-auth text-center mt-4">
+              <p class="mb-3">Sign up with</p>
+              <div class="d-flex justify-content-center gap-3">
+                <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><i class="fab fa-google"></i></a>
+                <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="btn btn-outline-secondary rounded-circle social-btn"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render "devise/shared/background_animation" %>

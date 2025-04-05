@@ -1,0 +1,35 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h3>Create New Video</h3>
+        </div>
+        
+        <div class="card-body">
+          <%= form_with(model: @video, url: videos_path, local: true) do |f| %>
+            <div class="form-group">
+              <%= f.label :title %>  
+              <%= f.text_field :title, class: 'form-control', required: true %>
+            </div>
+            
+            <div class="form-group">
+              <%= f.label :description %>
+              <%= f.text_area :description, class: 'form-control', rows: 4 %>
+            </div>
+            
+            <div class="form-group">
+              <%= f.label :thumbnail_url, 'Thumbnail URL' %>
+              <%= f.text_field :thumbnail_url, class: 'form-control' %>
+            </div>
+            
+            <div class="form-group mt-4">
+              <%= f.submit 'Create Video', class: 'btn btn-primary' %>
+              <%= link_to 'Cancel', dashboard_users_path, class: 'btn btn-outline-secondary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
