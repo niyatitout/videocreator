@@ -1,0 +1,31 @@
+<%= form_with(model: channel) do |f| %>
+  <% if channel.errors.any? %>
+    <div class="error-messages">
+      <% channel.errors.full_messages.each do |msg| %>
+        <p><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div>
+    <%= f.label :logo %>
+    <%= f.file_field :logo %>
+  </div>
+
+  <div>
+    <%= f.label :is_public, "Public Channel?" %>
+    <%= f.check_box :is_public %>
+  </div>
+
+  <%= f.submit %>
+<% end %>

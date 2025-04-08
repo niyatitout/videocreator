@@ -1,29 +1,31 @@
 Rails.application.routes.draw do
-  get "videos/index"
-  get "videos/new"
-  get "videos/create"
-  get "videos/show"
-  get "videos/edit"
-  get "videos/update"
-  get "videos/destroy"
+  # Devise routes
   devise_for :users, controllers: {
     registrations: 'users/registrations',
-    sessions: 'users/sessions'
+    sessions: 'users/sessions',
+    omniauth_callbacks: 'users/omniauth_callbacks'
   }
 
-  # User profile routes
+  # Root route (based on authentication)
+  authenticated :user do
+    root to: 'users#dashboard', as: :authenticated_root
+  end
+  root "home#index" # fallback root for unauthenticated users
+
+  # User profile and dashboard
   resources :users, only: [:show, :edit, :update] do
     collection do
       get :dashboard
     end
   end
 
-  # Add this line to create video resources
+  # Video routes (RESTful)
   resources :videos, only: [:index, :new, :create, :show, :edit, :update, :destroy]
 
-  # Set root path based on authentication status
-  authenticated :user do
-    root to: 'users#dashboard', as: :authenticated_root
+  # Channel Management (✅ now inside draw block!)
+  resources :channels do
+    member do
+      patch :toggle_visibility
+    end
   end
-  root "home#index"
 end

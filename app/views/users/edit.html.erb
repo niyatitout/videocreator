@@ -1,60 +1,259 @@
-<div class="profile-edit-container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-          <h3>Edit Your Profile</h3>
-        </div>
-        
-        <div class="card-body">
-          <%= form_with(model: @user, local: true, html: { multipart: true }) do |f| %>
-            <div class="row">
-              <div class="col-md-4 text-center">
-                <div class="avatar-upload">
-                  <%# <%= image_tag @user.avatar.url || 'default-avatar.jpg', id: 'avatar-preview', class: 'rounded-circle mb-3', style: 'width: 150px; height: 150px; object-fit: cover;' %> %>
-                  <%= f.file_field :avatar, id: 'avatar-upload', class: 'd-none' %>
-                  <label for="avatar-upload" class="btn btn-outline-primary btn-sm">Change Photo</label>
-                </div>
-              </div>
-              
-              <div class="col-md-8">
-                <div class="form-group">
-                  <%= f.label :name, 'Full Name' %>
-                  <%= f.text_field :name, class: 'form-control' %>
-                </div>
-                
-                <div class="form-group">
-                  <%= f.label :title, 'Professional Title' %>
-                  <%= f.text_field :title, class: 'form-control', placeholder: 'E.g. Video Creator, Content Producer' %>
-                </div>
-                
-                <div class="form-group">
-                  <%= f.label :bio, 'Bio' %>
-                  <%= f.text_area :bio, class: 'form-control', rows: 4 %>
-                </div>
-              </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile | VideoCreator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2E5077;
+      --primary-light: #3A6B9D;
+      --secondary: #4DA1A9;
+      --highlight: #79D7BE;
+      --bg: #F6F4F0;
+      --text: #2D3436;
+      --text-light: #5C6B7A;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+
+
+    /* Profile Edit Styles */
+    .profile-edit-container {
+      padding: 40px 0;
+    }
+
+    .profile-card {
+      border-radius: 12px;
+      border: none;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(46, 80, 119, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .profile-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 20px;
+    }
+
+    .profile-header h3 {
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    .profile-body {
+      padding: 30px;
+    }
+
+    .avatar-upload {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .avatar-preview {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--bg);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .avatar-preview:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .avatar-upload label {
+      display: inline-block;
+      margin-top: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .avatar-upload label:hover {
+      background-color: var(--primary-light) !important;
+      color: white !important;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 0.25rem rgba(77, 161, 169, 0.25);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+    }
+
+    .btn-save {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border: none;
+      padding: 10px 25px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(46, 80, 119, 0.2);
+    }
+
+    .btn-cancel {
+      border-color: var(--text-light);
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background-color: transparent;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .profile-body {
+        padding: 20px;
+      }
+      
+      .avatar-upload {
+        margin-bottom: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <%= render 'layouts/navbar' %>
+
+
+  <!-- Profile Edit Content -->
+  <div class="profile-edit-container">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+          <div class="profile-card shadow">
+            <div class="profile-header">
+              <h3><i class="fas fa-user-edit me-2"></i>Edit Your Profile</h3>
             </div>
             
-            <div class="form-group mt-4">
-              <%= f.submit 'Update Profile', class: 'btn btn-primary' %>
-              <%= link_to 'Cancel', user_path(@user), class: 'btn btn-outline-secondary' %>
+            <div class="profile-body">
+              <%= form_with(model: @user, local: true, html: { multipart: true }) do |f| %>
+                <div class="row">
+                  <div class="col-md-4 text-center">
+                    <div class="avatar-upload">
+<%= image_tag(@user.avatar.attached? ? url_for(@user.avatar) : 'avatar.jpg', 
+              id: 'avatar-preview', 
+              class: 'avatar-preview mb-3 rounded-circle', 
+              alt: "#{@user.name}'s avatar") %>
+                      <%= f.file_field :avatar, id: 'avatar-upload', class: 'd-none' %>
+                      <label for="avatar-upload" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-camera me-2"></i>Change Photo
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-8">
+                    <div class="form-group">
+                      <%= f.label :name, 'Full Name', class: 'form-label' %>
+                      <%= f.text_field :name, class: 'form-control' %>
+                    </div>
+                    
+                    <div class="form-group">
+                      <%= f.label :title, 'Professional Title', class: 'form-label' %>
+                      <%= f.text_field :title, class: 'form-control', placeholder: 'E.g. Video Creator, Content Producer' %>
+                    </div>
+                    <div class="form-group">
+                       <%= f.label :pronouns %>
+                        <%= f.text_field :pronouns, class: "form-control", placeholder: "e.g. she/her, he/him, they/them" %>
+                      </div>
+
+                       <div class="form-group mt-3">
+                         <%= f.label :account_type %>
+                        <%= f.select :account_type, ['Creator', 'Viewer', 'Admin'], {}, class: "form-control" %>
+                        </div>
+                        <div class="mb-3">
+  <%= f.label :city %>
+  <%= f.text_field :city, class: "form-control" %>
+</div>
+
+
+                    <div class="form-group">
+                      <%= f.label :bio, 'Bio', class: 'form-label' %>
+                      <%= f.text_area :bio, class: 'form-control', rows: 4, placeholder: 'Tell us about yourself and your creative work...' %>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group mt-4 d-flex justify-content-between">
+                  <%= link_to 'Cancel', user_path(@user), class: 'btn btn-cancel' %>
+                  <%= f.submit 'Update Profile', class: 'btn btn-save text-white' %>
+                </div>
+              <% end %>
+              <% if @user.errors.any? %>
+  <div class="alert alert-danger">
+    <h4>There were errors updating your profile:</h4>
+    <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
             </div>
-          <% end %>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<script>
-  document.getElementById('avatar-upload').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        document.getElementById('avatar-preview').src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Avatar Preview
+    document.getElementById('avatar-upload').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('avatar-preview').src = e.target.result;
+          document.getElementById('avatar-preview').classList.add('animate__animated', 'animate__pulse');
+          setTimeout(() => {
+            document.getElementById('avatar-preview').classList.remove('animate__animated', 'animate__pulse');
+          }, 1000);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Add animation to form elements
+    document.querySelectorAll('.form-group').forEach((element, index) => {
+      element.style.animationDelay = `${index * 0.1}s`;
+      element.classList.add('animate__animated', 'animate__fadeInUp');
+    });
+  </script>
+</body>
+</html>

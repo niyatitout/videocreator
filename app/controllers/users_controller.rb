@@ -11,12 +11,16 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update(user_params)
-      redirect_to @user, notice: 'Profile was successfully updated.'
-    else
-      render :edit
-    end
+  @user = current_user
+
+  if @user.update(user_params)
+    redirect_to @user, notice: "Profile updated successfully."
+  else
+    render :edit, status: :unprocessable_entity
   end
+end
+
+
 
   def dashboard
     @videos_count = current_user.videos.count
@@ -24,12 +28,23 @@ class UsersController < ApplicationController
     @shares_count = current_user.videos.sum(:shares_count)
     @recent_videos = current_user.videos.limit(6)
   end
+  
 
+  def destroy
+    @user = User.find(params[:id])
+    @user.discard
+    redirect_to root_path, notice: "Account successfully deleted (soft)."
+  end
   private
 
-  def set_user
-    @user = User.find(params[:id])
+
+ def set_user
+   @user = User.find_by(id: params[:id]) # Using find_by instead of find
+   if @user.nil?
+    redirect_to root_path, alert: "User not found."
   end
+ end
+
 
   def authorize_user
     unless @user == current_user
@@ -38,6 +53,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :title, :bio, :avatar)
-  end
+  params.require(:user).permit(:name, :email, :avatar, :title, :bio, :pronouns, :account_type)
+end
+
 end

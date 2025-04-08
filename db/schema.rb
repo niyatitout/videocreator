@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_04_104529) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_08_105719) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,28 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_104529) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "channel_members", force: :cascade do |t|
+    t.integer "channel_id", null: false
+    t.integer "user_id", null: false
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_channel_members_on_channel_id"
+    t.index ["user_id"], name: "index_channel_members_on_user_id"
+  end
+
+  create_table "channels", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "logo_url"
+    t.boolean "is_public"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "visibility", default: 0, null: false
+    t.index ["user_id"], name: "index_channels_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -51,6 +73,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_104529) do
     t.string "title"
     t.string "bio"
     t.string "avatar"
+    t.string "provider"
+    t.string "uid"
+    t.string "pronouns"
+    t.string "account_type"
+    t.datetime "discarded_at"
+    t.string "city"
+    t.index ["discarded_at"], name: "index_users_on_discarded_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -64,10 +93,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_104529) do
     t.integer "shares_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "views"
     t.index ["user_id"], name: "index_videos_on_user_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "channel_members", "channels"
+  add_foreign_key "channel_members", "users"
+  add_foreign_key "channels", "users"
   add_foreign_key "videos", "users"
 end

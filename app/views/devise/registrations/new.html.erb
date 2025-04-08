@@ -45,9 +45,12 @@
     </div>
 
     <!-- Social Login -->
-    <div class="social-login">
-      <%# <%= link_to "Sign up with Google", user_google_oauth2_omniauth_authorize_path, class: "btn-social" %> %>
-    </div>
+    <<div class="social-login">
+         <%= link_to user_google_oauth2_omniauth_authorize_path, class: "social-btn google", method: :post, data: { turbo: 'false' } do %>
+    <%= submit_tag "Sign in with Google", class: "btn-social" %>
+  <% end %>
+</div>
+
 
     <!-- Login Link -->
     <div class="auth-footer">

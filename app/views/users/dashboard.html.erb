@@ -1,81 +1,462 @@
+<%= render 'layouts/navbar' %>
+
 <div class="dashboard-container">
-  <div class="dashboard-header">
-    <h1>Welcome back, <%= current_user.name || current_user.email.split('@').first %></h1>
-    <p class="text-muted">Here's what's happening with your account today.</p>
-  </div>
-  
-  <div class="dashboard-stats row">
-    <div class="col-md-4">
-      <div class="stat-card">
-        <h3><%= @videos_count %></h3>
-        <p>Total Videos</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="stat-card">
-        <h3><%= @views_count %></h3>
-        <p>Total Views</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="stat-card">
-        <h3><%= @shares_count %></h3>
-        <p>Total Shares</p>
-      </div>
-    </div>
-  </div>
-  
-  <div class="dashboard-actions mt-5">
-    <h3>Quick Actions</h3>
-    <div class="row">
-      <div class="col-md-4">
-<%= link_to new_video_path, class: 'action-card' do %>
-  <i class="fas fa-plus"></i>
-  <span>Create New Video</span>
-<% end %>%>
-      </div>
-      <div class="col-md-4">
-        <%= link_to videos_path, class: 'action-card' do %>
-          <i class="fas fa-photo-film"></i>
-          <span>My Videos</span>
-        <% end %>
-      </div>
-      <div class="col-md-4">
-        <%= link_to edit_user_path(current_user), class: 'action-card' do %>
-          <i class="fas fa-user-edit"></i>
-          <span>Edit Profile</span>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  
-  <div class="recent-videos mt-5">
-    <h3>Recent Videos</h3>
-    <% if @recent_videos.any? %>
-      <div class="row">
-        <% @recent_videos.each do |video| %>
-          <div class="col-md-4 mb-4">
-            <div class="video-card">
-              <div class="video-thumbnail">
-                <%= image_tag video.thumbnail_url || 'default-thumbnail.jpg' %>
-                <div class="video-duration">3:45</div>
+  <% if user_signed_in? %>
+    <div class="container py-5">
+      <!-- User Profile Header with Gradient Background -->
+      <div class="row mb-5">
+        <div class="col-md-12">
+          <div class="profile-header card border-0 shadow-lg">
+            <div class="card-header bg-gradient-primary text-white py-4">
+              <div class="d-flex align-items-center">
+                <%= image_tag current_user.avatar.attached? ? current_user.avatar : 'avatar.jpg', 
+                    class: 'rounded-circle me-4 profile-avatar shadow', style: 'width: 80px; height: 80px; object-fit: cover; border: 3px solid rgba(255,255,255,0.3);' %>
+                <div>
+                  <h1 class="h3 mb-1">Welcome back, <%= current_user.name || current_user.email %></h1>
+                  <p class="mb-0 opacity-75">
+                    <i class="far fa-calendar-alt me-1"></i> Joined <%= current_user.created_at.strftime("%B %Y") %>
+                    <span class="mx-2">•</span>
+                    <i class="fas fa-map-marker-alt me-1"></i> <%= current_user.city %>
+                  </p>
+                </div>
               </div>
-              <div class="video-info">
-                <h5><%= video.title %></h5>
-                <p class="text-muted"><%= time_ago_in_words(video.created_at) %> ago</p>
-                <div class="video-stats">
-                  <span><i class="fas fa-eye"></i> <%= video.views_count %></span>
-                  <span><i class="fas fa-share"></i> <%= video.shares_count %></span>
+            </div>
+            <div class="card-body py-3">
+              <div class="d-flex flex-wrap align-items-center justify-content-between">
+                <div class="d-flex flex-wrap gap-2 mb-2 mb-md-0">
+                  <span class="badge rounded-pill bg-primary-soft text-primary">
+                    <i class="fas fa-star me-1"></i> Premium Member
+                  </span>
+                  <span class="badge rounded-pill bg-success-soft text-success">
+                    <i class="fas fa-check-circle me-1"></i> Verified
+                  </span>
+                  <span class="badge rounded-pill bg-info-soft text-info">
+                    <i class="fas fa-bolt me-1"></i> Content Creator
+                  </span>
+                </div>
+                <%= link_to edit_user_path(current_user), class: 'btn btn-sm btn-outline-primary rounded-pill' do %>
+                  <i class="fas fa-cog me-1"></i> Settings
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions with Icon Cards -->
+      <div class="row mb-5">
+        <div class="col-md-12">
+          <h2 class="h5 text-uppercase text-muted mb-3 fw-bold">Quick Actions</h2>
+          <div class="row g-4">
+            <div class="col-md-4">
+              <%= link_to edit_user_path(current_user), class: 'action-card card card-hover h-100 border-0 shadow-sm text-decoration-none' do %>
+                <div class="card-body text-center py-4">
+                  <div class="icon-circle bg-primary-soft text-primary mb-3 mx-auto">
+                    <i class="fas fa-user-edit fs-4"></i>
+                  </div>
+                  <h3 class="h5 mb-1">Edit Profile</h3>
+                  <p class="text-muted small mb-0">Update your personal information</p>
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="col-md-4">
+              <%= link_to user_path(current_user), class: 'action-card card card-hover h-100 border-0 shadow-sm text-decoration-none' do %>
+                <div class="card-body text-center py-4">
+                  <div class="icon-circle bg-secondary-soft text-secondary mb-3 mx-auto">
+                    <i class="fas fa-eye fs-4"></i>
+                  </div>
+                  <h3 class="h5 mb-1">View Profile</h3>
+                  <p class="text-muted small mb-0">See how others view your profile</p>
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="col-md-4">
+              <% if @channel.present? %>
+                <%= link_to channel_path(@channel), class: 'action-card card card-hover h-100 border-0 shadow-sm text-decoration-none' do %>
+                  <div class="card-body text-center py-4">
+                    <div class="icon-circle bg-success-soft text-success mb-3 mx-auto">
+                      <i class="fas fa-tv fs-4"></i>
+                    </div>
+                    <h3 class="h5 mb-1">My Channel</h3>
+                    <p class="text-muted small mb-0">Manage your content and analytics</p>
+                  </div>
+                <% end %>
+              <% else %>
+                <%= link_to new_channel_path, class: 'action-card card card-hover h-100 border-0 shadow-sm text-decoration-none' do %>
+                  <div class="card-body text-center py-4">
+                    <div class="icon-circle bg-warning-soft text-warning mb-3 mx-auto">
+                      <i class="fas fa-plus-circle fs-4"></i>
+                    </div>
+                    <h3 class="h5 mb-1">Create Channel</h3>
+                    <p class="text-muted small mb-0">Start sharing your content today</p>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards with Progress Indicators -->
+      <div class="row mb-5">
+        <div class="col-md-12">
+          <h2 class="h5 text-uppercase text-muted mb-3 fw-bold">Channel Analytics</h2>
+          <div class="row g-4">
+            <div class="col-md-4">
+              <div class="stat-card card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="icon-circle bg-primary-soft text-primary me-3">
+                      <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                      <h3 class="h6 text-muted mb-0">Subscribers</h3>
+                      <h2 class="h3 mb-0">1,240</h2>
+                    </div>
+                  </div>
+                  <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="small text-muted mt-2 mb-0">
+                    <span class="text-success"><i class="fas fa-arrow-up"></i> 12.5%</span> from last month
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="stat-card card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="icon-circle bg-info-soft text-info me-3">
+                      <i class="fas fa-video"></i>
+                    </div>
+                    <div>
+                      <h3 class="h6 text-muted mb-0">Videos</h3>
+                      <h2 class="h3 mb-0">48</h2>
+                    </div>
+                  </div>
+                  <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 45%;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="small text-muted mt-2 mb-0">
+                    <span class="text-success"><i class="fas fa-arrow-up"></i> 3 new</span> this month
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="stat-card card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="icon-circle bg-success-soft text-success me-3">
+                      <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                      <h3 class="h6 text-muted mb-0">Watch Time</h3>
+                      <h2 class="h3 mb-0">1.2K hrs</h2>
+                    </div>
+                  </div>
+                  <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 78%;" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="small text-muted mt-2 mb-0">
+                    <span class="text-success"><i class="fas fa-arrow-up"></i> 22%</span> increase
+                  </p>
                 </div>
               </div>
             </div>
           </div>
-        <% end %>
+        </div>
       </div>
-    <% else %>
-      <div class="alert alert-info">
-        You haven't created any videos yet. <%= link_to 'Create your first video now!', new_video_path %>
+
+      <!-- Two Column Layout -->
+      <div class="row">
+        <!-- Recent Activity -->
+        <div class="col-lg-8 mb-4 mb-lg-0">
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 py-3">
+              <div class="d-flex align-items-center justify-content-between">
+                <h2 class="h5 mb-0"><i class="fas fa-history text-primary me-2"></i>Recent Activity</h2>
+                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">View All</a>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="activity-timeline">
+                <div class="activity-item position-relative pb-4">
+                  <div class="activity-icon bg-primary text-white rounded-circle shadow">
+                    <i class="fas fa-video"></i>
+                  </div>
+                  <div class="activity-content ms-4 ps-3">
+                    <div class="d-flex justify-content-between">
+                      <h4 class="h6 mb-1">New Video Uploaded</h4>
+                      <small class="text-muted">2 hours ago</small>
+                    </div>
+                    <p class="mb-2">"How to build a Rails app in 10 minutes"</p>
+                    <div class="d-flex gap-2">
+                      <span class="badge bg-light text-dark"><i class="fas fa-eye me-1"></i> 1.2K views</span>
+                      <span class="badge bg-light text-dark"><i class="fas fa-thumbs-up me-1"></i> 84 likes</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="activity-item position-relative pb-4">
+                  <div class="activity-icon bg-success text-white rounded-circle shadow">
+                    <i class="fas fa-thumbs-up"></i>
+                  </div>
+                  <div class="activity-content ms-4 ps-3">
+                    <div class="d-flex justify-content-between">
+                      <h4 class="h6 mb-1">New Subscriber</h4>
+                      <small class="text-muted">1 day ago</small>
+                    </div>
+                    <p class="mb-0">@codingfan123 subscribed to your channel</p>
+                  </div>
+                </div>
+                
+                <div class="activity-item position-relative">
+                  <div class="activity-icon bg-warning text-white rounded-circle shadow">
+                    <i class="fas fa-comment"></i>
+                  </div>
+                  <div class="activity-content ms-4 ps-3">
+                    <div class="d-flex justify-content-between">
+                      <h4 class="h6 mb-1">New Comment</h4>
+                      <small class="text-muted">2 days ago</small>
+                    </div>
+                    <p class="mb-2">"Great tutorial! Really helped me understand the concepts."</p>
+                    <a href="#" class="btn btn-sm btn-outline-secondary rounded-pill">Reply</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Upcoming Tasks / Notifications -->
+        <div class="col-lg-4">
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white border-0 py-3">
+              <h2 class="h5 mb-0"><i class="fas fa-bell text-warning me-2"></i>Notifications</h2>
+            </div>
+            <div class="card-body">
+              <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                  <div class="d-flex align-items-center">
+                    <div class="icon-circle bg-info-soft text-info me-3">
+                      <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">System Update Available</h6>
+                      <p class="small text-muted mb-0">Upgrade to version 2.3</p>
+                    </div>
+                  </div>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                  <div class="d-flex align-items-center">
+                    <div class="icon-circle bg-success-soft text-success me-3">
+                      <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Video Approved</h6>
+                      <p class="small text-muted mb-0">"Rails Tips & Tricks" is now live</p>
+                    </div>
+                  </div>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                  <div class="d-flex align-items-center">
+                    <div class="icon-circle bg-primary-soft text-primary me-3">
+                      <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">New Message</h6>
+                      <p class="small text-muted mb-0">From: support@example.com</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Progress Overview -->
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 py-3">
+              <h2 class="h5 mb-0"><i class="fas fa-trophy text-danger me-2"></i>Milestones</h2>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                  <span class="small">Silver Creator</span>
+                  <span class="small">75%</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                  <div class="progress-bar bg-danger" role="progressbar" style="width: 75%;"></div>
+                </div>
+                <p class="small text-muted mt-1 mb-0">500 subscribers needed (375/500)</p>
+              </div>
+              
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                  <span class="small">Content Consistency</span>
+                  <span class="small">40%</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                  <div class="progress-bar bg-warning" role="progressbar" style="width: 40%;"></div>
+                </div>
+                <p class="small text-muted mt-1 mb-0">4 videos this month (2/4)</p>
+              </div>
+              
+              <div class="">
+                <div class="d-flex justify-content-between mb-1">
+                  <span class="small">Engagement Rate</span>
+                  <span class="small">68%</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 68%;"></div>
+                </div>
+                <p class="small text-muted mt-1 mb-0">Above platform average</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>
+
+<style>
+  :root {
+    --primary: #4e73df;
+    --primary-soft: #e6f0fd;
+    --secondary: #858796;
+    --secondary-soft: #f8f9fa;
+    --success: #1cc88a;
+    --success-soft: #e2f6ee;
+    --info: #36b9cc;
+    --info-soft: #e8f7fa;
+    --warning: #f6c23e;
+    --warning-soft: #fef7e6;
+    --danger: #e74a3b;
+    --danger-soft: #fbeae8;
+  }
+  
+  .dashboard-container {
+    background-color: #f8fafc;
+    min-height: 100vh;
+  }
+  
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, #224abe 100%);
+  }
+  
+  .profile-header {
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .profile-avatar {
+    transition: all 0.3s ease;
+  }
+  
+  .profile-avatar:hover {
+    transform: scale(1.05);
+  }
+  
+  .icon-circle {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card-hover {
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1) !important;
+    border-color: rgba(78, 115, 223, 0.2);
+  }
+  
+  .stat-card {
+    transition: all 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .activity-timeline {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  
+  .activity-timeline::before {
+    content: '';
+    position: absolute;
+    left: 2.1rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #e9ecef;
+  }
+  
+  .activity-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 2.1rem;
+    top: 3rem;
+    bottom: 0;
+    width: 2px;
+    background-color: #e9ecef;
+  }
+  
+  .activity-icon {
+    position: absolute;
+    left: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  
+  .activity-content {
+    padding-bottom: 2rem;
+  }
+  
+  .badge.rounded-pill {
+    padding: 0.35em 0.65em;
+  }
+  
+  .bg-primary-soft {
+    background-color: var(--primary-soft);
+  }
+  
+  .bg-secondary-soft {
+    background-color: var(--secondary-soft);
+  }
+  
+  .bg-success-soft {
+    background-color: var(--success-soft);
+  }
+  
+  .bg-info-soft {
+    background-color: var(--info-soft);
+  }
+  
+  .bg-warning-soft {
+    background-color: var(--warning-soft);
+  }
+  
+  .bg-danger-soft {
+    background-color: var(--danger-soft);
+  }
+</style>
