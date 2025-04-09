@@ -12,7 +12,7 @@ class User < ApplicationRecord
   # name:string, title:string, bio:text, avatar:string
 
   has_many :videos, dependent: :destroy
-      has_one :channel, dependent: :destroy
+  has_one :channel, dependent: :destroy
 
   # For avatar upload (if using Active Storage)
   has_one_attached :avatar
@@ -30,8 +30,21 @@ class User < ApplicationRecord
 
  
 
-def create_channel
-  build_channel(name: "#{self.name}'s Channel").save
-end
+  def self.ransackable_attributes(auth_object = nil)
+    %w[
+      id
+      name
+      email
+      title
+      pronouns
+      bio
+      account_type
+      created_at
+      updated_at
+    ]
+  end
+  def create_channel
+    build_channel(name: "#{self.name}'s Channel").save
+  end
 
 end

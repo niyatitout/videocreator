@@ -41,7 +41,7 @@ gem "thruster", require: false
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  # See https://guides .rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
@@ -72,3 +72,10 @@ gem 'omniauth'
 
 #soft delete
 gem 'discard'
+# Gemfile
+gem 'jquery-validation-rails'
+
+ #active admin
+gem 'activeadmin'
+gem 'sprockets', '<4'
+gem 'sass-rails'

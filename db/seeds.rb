@@ -16,4 +16,4 @@ user = User.create!(
   )
 end
 
-puts "Created 1 user with 5 videos"
+puts "Created 1 user with 5 videos"AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
