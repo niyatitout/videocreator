@@ -3,4 +3,3 @@ import "@hotwired/turbo-rails"
 import "controllers"
 //= require jquery.validate
 // app/javascript/packs/application.js
-import 'jquery-validation';

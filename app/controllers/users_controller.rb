@@ -35,7 +35,7 @@ end
     @user.discard
     redirect_to root_path, notice: "Account successfully deleted (soft)."
   end
-  private
+  
 
 
  def set_user
@@ -55,5 +55,13 @@ end
   def user_params
   params.require(:user).permit(:name, :email, :avatar, :title, :bio, :pronouns, :account_type)
 end
+
+
+#2fa
+
+  def security_settings
+    @user = current_user
+  end
+
 
 end

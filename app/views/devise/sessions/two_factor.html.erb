@@ -1,0 +1,12 @@
+<h3>Enable Two-Factor Authentication</h3>
+
+<p>Scan the QR Code below in your Authenticator App:</p>
+<%= image_tag @qr_code %>
+
+<%= form_with url: verify_2fa_path, method: :post do |f| %>
+  <div>
+    <label>Enter OTP Code</label>
+    <%= text_field_tag :otp_attempt, nil, required: true %>
+  </div>
+  <%= submit_tag "Verify", class: "btn btn-success" %>
+<% end %>

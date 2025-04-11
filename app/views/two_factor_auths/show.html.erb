@@ -1,0 +1,25 @@
+<h2>Enable Two-Factor Authentication</h2>
+
+<p>Scan this QR code with your authenticator app:</p>
+<%= @qr_code.as_svg(module_size: 4).html_safe %>
+
+<p>Or enter this secret manually: <%= current_user.otp_secret %></p>
+
+<%= form_with url: two_factor_auth_path, method: :post do |f| %>
+  <div class="field">
+    <%= label_tag :otp_attempt, "Enter 6-digit code to confirm" %>
+    <%= text_field_tag :otp_attempt %>
+  </div>
+
+  <div class="actions">
+    <%= submit_tag "Enable 2FA" %>
+  </div>
+<% end %>
+
+<h3>Recovery Codes</h3>
+<p>Save these codes in a safe place:</p>
+<ul>
+  <% current_user.recovery_codes.each do |code| %>
+    <li><%= code %></li>
+  <% end %>
+</ul>

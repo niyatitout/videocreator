@@ -79,3 +79,10 @@ gem 'jquery-validation-rails'
 gem 'activeadmin'
 gem 'sprockets', '<4'
 gem 'sass-rails'
+
+
+#2fa
+
+gem 'rotp'       # For TOTP (Time-Based OTP)
+gem 'rqrcode'    # For QR code generation
+gem 'devise-two-factor' # Optional but helpful

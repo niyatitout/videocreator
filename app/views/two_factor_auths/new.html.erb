@@ -1,0 +1,14 @@
+<h2>Set Up Two-Factor Authentication</h2>
+
+<%= image_tag current_user.otp_qrcode(provisioning_uri: @provisioning_uri).as_png.to_data_url %>
+
+<p>Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.)</p>
+
+<%= form_with url: two_factor_auths_path, method: :post do |f| %>
+  <div class="field">
+    <%= f.label :code, "Enter the 6-digit code from your app" %>
+    <%= f.text_field :code, autocomplete: "off" %>
+  </div>
+
+  <%= f.submit "Verify and Enable 2FA" %>
+<% end %>

@@ -3,41 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= @channel.name %> | Beautiful Channel</title>
+    <title><%= @channel.name %> | Premium Content Channel</title>
     <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --primary-hover: #5649c0;
+            --secondary-color: #fd79a8;
+            --accent-color: #00cec9;
+            --dark-color: #2d3436;
+            --light-color: #f5f6fa;
+            --white: #ffffff;
+            --gray: #636e72;
+            --light-gray: #dfe6e9;
+            --border-radius: 16px;
+            --box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
+            color: var(--dark-color);
+            background-color: var(--light-color);
             margin: 0;
             padding: 0;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 3rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
         
-        .channel-header {
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
             display: flex;
             align-items: center;
-            margin-bottom: 40px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            padding: 30px;
+            gap: 10px;
+        }
+        
+        .brand-icon {
+            font-size: 1.8rem;
+        }
+        
+        .search-bar {
+            padding: 0.8rem 1.8rem;
+            width: 40%;
+            border: none;
+            background: rgba(0,0,0,0.03);
+            border-radius: 50px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        
+        .search-bar:focus {
+            background: rgba(0,0,0,0.05);
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+        
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid white;
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2);
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(108, 92, 231, 0.3);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 30px;
+        }
+        
+        /* Channel Header */
+        .channel-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 60px;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .channel-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+        }
+        
+        .channel-logo-container {
+            position: relative;
+            margin-right: 40px;
+            flex-shrink: 0;
         }
         
         .channel-logo {
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             object-fit: cover;
-            margin-right: 30px;
-            border: 5px solid #f0f0f0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 10px solid var(--light-color);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+        
+        .channel-logo:hover {
+            transform: rotate(5deg) scale(1.05);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.15);
         }
         
         .channel-info {
@@ -45,77 +154,445 @@
         }
         
         .channel-name {
-            font-size: 2.2rem;
-            margin: 0 0 10px;
-            color: #222;
-            font-weight: 300;
+            font-size: 3rem;
+            margin: 0 0 20px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            line-height: 1.2;
         }
         
         .channel-description {
-            font-size: 1.1rem;
-            color: #666;
-            margin-bottom: 20px;
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 30px;
             max-width: 800px;
+            line-height: 1.8;
         }
         
+        /* Channel Meta */
         .channel-meta {
             display: flex;
             gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
         
         .meta-item {
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
-            color: #777;
+            font-size: 1rem;
+            color: var(--gray);
+            background: rgba(0,0,0,0.03);
+            padding: 10px 18px;
+            border-radius: 50px;
+            transition: var(--transition);
+        }
+        
+        .meta-item:hover {
+            background: rgba(0,0,0,0.05);
+            transform: translateY(-2px);
         }
         
         .meta-item i {
-            margin-right: 8px;
+            margin-right: 10px;
             font-size: 1.1rem;
+            color: var(--primary-color);
         }
         
         .badge {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
         }
         
         .badge-public {
-            background-color: #e3f7e8;
+            background-color: rgba(46, 125, 50, 0.1);
             color: #2e7d32;
         }
         
         .badge-private {
-            background-color: #ffebee;
+            background-color: rgba(198, 40, 40, 0.1);
             color: #c62828;
         }
         
-        .created-at {
+        /* Subscribe Button */
+        .subscribe-btn {
+            position: absolute;
+            top: 60px;
+            right: 60px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1.2rem 2.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 2;
+        }
+        
+        .subscribe-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+        }
+        
+        /* Subscription Plans Section */
+        .plans-section {
+            margin: 80px 0;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--dark-color);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 80px;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+        
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+        
+        .plan-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 50px 40px;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .plan-card.popular {
+            border: 2px solid var(--primary-color);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: 25px;
+            right: -35px;
+            background: var(--secondary-color);
+            color: white;
+            padding: 6px 45px;
+            transform: rotate(45deg);
             font-size: 0.9rem;
-            color: #999;
-            margin-top: 40px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(253, 121, 168, 0.3);
+        }
+        
+        .plan-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--dark-color);
+        }
+        
+        .plan-price span {
+            font-size: 1.1rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+        
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 40px;
+        }
+        
+        .plan-features li {
+            padding: 12px 0;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .plan-features li i {
+            color: var(--accent-color);
+            margin-right: 12px;
+            font-size: 1rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .plan-select-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .plan-select-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+        }
+        
+        /* Featured Content Section */
+        .content-section {
+            margin: 80px 0;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .content-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .content-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .content-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .content-card:hover .content-thumbnail {
+            transform: scale(1.05);
+        }
+        
+        .content-details {
+            padding: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .content-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        .content-meta i {
+            margin-right: 5px;
+        }
+        
+        /* Created At */
+        .created-at {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-top: 80px;
             text-align: right;
             font-style: italic;
         }
+        
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 28px rgba(108, 92, 231, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 100;
+        }
+        
+        .fab:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 12px 32px rgba(108, 92, 231, 0.4);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 40px;
+            }
+            
+            .channel-header {
+                padding: 50px 40px;
+            }
+            
+            .subscribe-btn {
+                top: 50px;
+                right: 50px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .channel-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 50px 40px;
+            }
+            
+            .channel-logo-container {
+                margin-right: 0;
+                margin-bottom: 40px;
+            }
+            
+            .subscribe-btn {
+                position: static;
+                margin-top: 40px;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .channel-meta {
+                justify-content: center;
+            }
+            
+            .navbar {
+                padding: 1.2rem;
+            }
+            
+            .search-bar {
+                width: 50%;
+            }
+            
+            .channel-name {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+                padding: 1.5rem;
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+            
+            .channel-name {
+                font-size: 2rem;
+            }
+            
+            .plans-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .plan-card {
+                padding: 40px 30px;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .fab {
+                bottom: 30px;
+                right: 30px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">
+            <i class="fas fa-play-circle brand-icon"></i>
+            StreamHub
+        </a>
+        <input type="text" placeholder="Search channels, videos..." class="search-bar">
+        <div class="user-avatar">U</div>
+    </nav>
+
     <div class="container">
+        <!-- Channel Header -->
         <div class="channel-header">
-            <% if @channel.logo_url.present? %>
-                <img src="<%= @channel.logo_url %>" alt="<%= @channel.name %> logo" class="channel-logo">
-            <% else %>
-                <div class="channel-logo" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-                    <%= @channel.name.first.upcase %>
-                </div>
-            <% end %>
+            <!-- Channel Logo -->
+            <div class="channel-logo-container">
+                <% if @channel.logo_url.present? %>
+                    <img src="<%= @channel.logo_url %>" alt="<%= @channel.name %> logo" class="channel-logo">
+                <% else %>
+                    <div class="channel-logo" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); display: flex; align-items: center; justify-content: center; color: white; font-size: 4.5rem; font-weight: 700;">
+                        <%= @channel.name.first.upcase %>
+                    </div>
+                <% end %>
+            </div>
             
+            <!-- Channel Info -->
             <div class="channel-info">
                 <h1 class="channel-name"><%= @channel.name %></h1>
                 
@@ -146,18 +623,136 @@
                     
                     <div class="meta-item">
                         <i class="fas fa-user"></i>
-                        <span>Owner ID: <%= @channel.user_id %></span>
+                        <span>Owner: <%= @channel.user.email %></span>
+                    </div>
+                    
+                    <div class="meta-item">
+                        <i class="fas fa-users"></i>
+                        <%# <span><%= number_with_delimiter(@channel.subscribers_count) %> subscribers</span> %>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Subscribe Button -->
+            <button class="subscribe-btn">
+                <i class="fas fa-heart"></i> Subscribe
+            </button>
+        </div>
+        
+        <!-- Subscription Plans Section -->
+        <div class="plans-section">
+            <h2 class="section-title">Choose Your Plan</h2>
+            <div class="plans-grid">
+                <!-- Free Plan -->
+                <div class="plan-card">
+                    <h3 class="plan-name">Free</h3>
+                    <div class="plan-price">$0 <span>/ forever</span></div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> Access to basic content</li>
+                        <li><i class="fas fa-check"></i> Limited video quality (720p)</li>
+                        <li><i class="fas fa-check"></i> Community access</li>
+                        <li><i class="fas fa-times"></i> No exclusive content</li>
+                        <li><i class="fas fa-times"></i> Ads supported</li>
+                    </ul>
+                    <button class="plan-select-btn">
+                        <i class="fas fa-user-plus"></i> Join Free
+                    </button>
+                </div>
+                
+                <!-- Premium Plan -->
+                <div class="plan-card popular">
+                    <div class="popular-badge">POPULAR</div>
+                    <h3 class="plan-name">Premium</h3>
+                    <div class="plan-price">$9.99 <span>/ month</span></div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> All free tier benefits</li>
+                        <li><i class="fas fa-check"></i> HD video (1080p)</li>
+                        <li><i class="fas fa-check"></i> Exclusive content</li>
+                        <li><i class="fas fa-check"></i> Ad-free experience</li>
+                        <li><i class="fas fa-check"></i> Early access to videos</li>
+                    </ul>
+                    <button class="plan-select-btn">
+                        <i class="fas fa-crown"></i> Get Premium
+                    </button>
+                </div>
+                
+                <!-- VIP Plan -->
+                <div class="plan-card">
+                    <h3 class="plan-name">VIP</h3>
+                    <div class="plan-price">$29.99 <span>/ month</span></div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> All premium benefits</li>
+                        <li><i class="fas fa-check"></i> 4K Ultra HD</li>
+                        <li><i class="fas fa-check"></i> Behind-the-scenes</li>
+                        <li><i class="fas fa-check"></i> Direct creator contact</li>
+                        <li><i class="fas fa-check"></i> VIP badge & recognition</li>
+                    </ul>
+                    <button class="plan-select-btn">
+                        <i class="fas fa-gem"></i> Become VIP
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Featured Content Section -->
+        <div class="content-section">
+            <h2 class="section-title">Featured Videos</h2>
+            <div class="content-grid">
+                <!-- Content Card 1 -->
+                <div class="content-card">
+                    <div class="thumbnail-container" style="overflow: hidden; border-radius: var(--border-radius) var(--border-radius) 0 0;">
+                        <img src="https://source.unsplash.com/random/600x400/?tech,web" alt="Video thumbnail" class="content-thumbnail">
+                    </div>
+                    <div class="content-details">
+                        <h3 class="content-title">Getting Started with Modern Web Design in 2023</h3>
+                        <div class="content-meta">
+                            <span><i class="fas fa-eye"></i> 12.4K views</span>
+                            <span><i class="fas fa-clock"></i> 15 min</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Content Card 2 -->
+                <div class="content-card">
+                    <div class="thumbnail-container" style="overflow: hidden; border-radius: var(--border-radius) var(--border-radius) 0 0;">
+                        <img src="https://source.unsplash.com/random/600x400/?coding,javascript" alt="Video thumbnail" class="content-thumbnail">
+                    </div>
+                    <div class="content-details">
+                        <h3 class="content-title">Advanced JavaScript Patterns for Clean Code</h3>
+                        <div class="content-meta">
+                            <span><i class="fas fa-eye"></i> 8.7K views</span>
+                            <span><i class="fas fa-clock"></i> 22 min</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Content Card 3 -->
+                <div class="content-card">
+                    <div class="thumbnail-container" style="overflow: hidden; border-radius: var(--border-radius) var(--border-radius) 0 0;">
+                        <img src="https://source.unsplash.com/random/600x400/?developer,ui" alt="Video thumbnail" class="content-thumbnail">
+                    </div>
+                    <div class="content-details">
+                        <h3 class="content-title">Building Responsive UIs with Modern CSS</h3>
+                        <div class="content-meta">
+                            <span><i class="fas fa-eye"></i> 15.2K views</span>
+                            <span><i class="fas fa-clock"></i> 18 min</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         
         <p class="created-at">
-            Created <%= time_ago_in_words(@channel.created_at) %> ago
+            Channel created <%= time_ago_in_words(@channel.created_at) %> ago
             <% if @channel.created_at != @channel.updated_at %>
                 • Last updated <%= time_ago_in_words(@channel.updated_at) %> ago
             <% end %>
         </p>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab">
+        <i class="fas fa-comment-dots"></i>
     </div>
 </body>
 </html>

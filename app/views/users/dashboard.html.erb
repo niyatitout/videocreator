@@ -17,6 +17,8 @@
                     <i class="far fa-calendar-alt me-1"></i> Joined <%= current_user.created_at.strftime("%B %Y") %>
                     <span class="mx-2">•</span>
                     <i class="fas fa-map-marker-alt me-1"></i> <%= current_user.city %>
+                      <%= link_to "Security Settings", security_settings_users_path, class: "btn btn-outline-primary" %>
+
                   </p>
                 </div>
               </div>

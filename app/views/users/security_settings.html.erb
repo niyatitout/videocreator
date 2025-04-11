@@ -1,0 +1,9 @@
+<h2>Security Settings</h2>
+
+<% if current_user.otp_required_for_login? %>
+  <p><strong>2FA is enabled</strong></p>
+  <%= link_to "Disable 2FA", two_factor_auth_path, method: :delete, class: "btn btn-danger" %>
+<% else %>
+  <p><strong>2FA is not enabled</strong></p>
+  <%= link_to "Enable 2FA", two_factor_auth_path, method: :post, class: "btn btn-primary" %>
+<% end %>
