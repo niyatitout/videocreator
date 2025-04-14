@@ -1,8 +1,6 @@
 ActiveAdmin.register User do
-  # 👇 Allow only specific attributes to be modified via the admin panel
   permit_params :email, :password, :password_confirmation
 
-  # 👇 Display columns in index view
   index do
     selectable_column
     id_column
@@ -12,11 +10,9 @@ ActiveAdmin.register User do
     actions
   end
 
-  # 👇 Filters in the admin sidebar
   filter :email
   filter :created_at
 
-  # 👇 Form for creating/editing users
   form do |f|
     f.inputs "User Details" do
       f.input :email

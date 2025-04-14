@@ -25,7 +25,6 @@
       line-height: 1.6;
     }
 
-    /* Navigation */
     .navbar {
       background-color: white;
       box-shadow: 0 2px 15px rgba(46, 80, 119, 0.1);
@@ -73,9 +72,8 @@
       color: white;
     }
 
-    /* Hero Section */
     .hero {
-      background: linear-gradient(135deg, rgba(246, 244, 240, 0.9) 0%, rgba(246, 244, 240, 0.95) 100%), 
+      background: linear-gradient(135deg, rgba(246, 244, 240, 0.9) 0%, rgba(246, 244, 240, 0.95) 100%),
                   url('https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
       background-size: cover;
       background-position: center;
@@ -106,7 +104,6 @@
       margin-right: 15px;
     }
 
-    /* Features Section */
     .features {
       padding: 80px 0;
     }
@@ -163,7 +160,6 @@
       font-size: 1.8rem;
     }
 
-    /* CTA Section */
     .cta {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
       padding: 80px 0;
@@ -186,7 +182,6 @@
       font-weight: 600;
     }
 
-    /* Footer */
     footer {
       background: var(--primary);
       color: white;
@@ -239,67 +234,83 @@
       .hero h1 {
         font-size: 2.2rem;
       }
-      
+
       .hero p {
         font-size: 1rem;
       }
     }
   </style>
 </head>
+
 <body>
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <i class="fas fa-video me-2"></i>VideoCreator
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#features">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#how-it-works">How It Works</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#pricing">Pricing</a>
-          </li>
-          <% if user_signed_in? %>
-  <li class="nav-item">
-    <span class="nav-link">Hello, <%= current_user.email %></span>
-  </li>
-  <li class="nav-item ms-lg-2">
-    <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-primary", form: { class: "d-inline" } %>
-  </li>
-<% else %>
-  <li class="nav-item">
-    <a class="nav-link" href="/users/sign_in">Login</a>
-  </li>
-  <li class="nav-item ms-lg-2">
-    <a href="/users/sign_up" class="btn btn-primary">Sign Up</a>
-  </li>
-<% end %>
+<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+  <div class="container">
+    <%= link_to root_path, class: "navbar-brand fw-bold text-primary" do %>
+      <i class="fas fa-video me-2 text-secondary"></i>VideoCreator
+    <% end %>
+  <% if user_signed_in? %>
 
-        </ul>
-      </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <%= link_to "My Account", "#features", class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "My channel", "#how-it-works", class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "My Videos", "#pricing", class: "nav-link" %>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-user-circle me-1"></i>
+              <%= current_user.email %>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><%= link_to "My Account", edit_user_registration_path, class: "dropdown-item" %></li>
+              <li><%= link_to "My Videos", "#", class: "dropdown-item" %></li>
+            <li>
+              <%= link_to (current_user.channel.present? ? "My Channel" : "Create Channel"), 
+              (current_user.channel.present? ? channel_path(current_user.channel) : new_channel_path), 
+              class: "dropdown-item" %>
+            </li>
+
+              <li><hr class="dropdown-divider"></li>
+              <li><%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "dropdown-item", form: { data: { turbo: false } } %></li>
+            </ul>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "Login", new_user_session_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item ms-2">
+            <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %>
+          </li>
+        <% end %>
+      </ul>
     </div>
-  </nav>
-
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-          behavior: 'smooth'
-        });
+  </div>
+</nav>
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    const href = this.getAttribute('href');
+    if (href.length > 1 && document.querySelector(href)) {
+      e.preventDefault();
+      document.querySelector(href).scrollIntoView({
+        behavior: 'smooth'
       });
-    });
-  </script>
+    }
+  });
+});
+</script>
 </body>
 </html>
