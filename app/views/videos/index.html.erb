@@ -1,33 +1,183 @@
-<div class="container mt-5">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>My Videos</h1>
-    <%= link_to 'New Video', new_video_path, class: 'btn btn-primary' %>
-  </div>
-  
-  <% if @videos.any? %>
-    <div class="row">
+<style>
+   /* Overall page layout */
+.video-index {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: var(--bg);
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Grid layout for videos */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Video Card Styles (already defined above) */
+.video-card-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.video-card {
+  width: 300px;
+  background-color: var(--bg);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 200px;
+  background: #eaeaea;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px 16px 0 0;
+}
+
+.video-thumbnail .video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-video {
+  text-align: center;
+  line-height: 200px;
+  color: #888;
+  font-size: 1.2rem;
+}
+
+.video-card-info {
+  padding: 20px;
+}
+
+.video-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.video-description {
+  color: var(--text-light);
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.video-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-action {
+  padding: 8px 15px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn-show {
+  background-color: var(--primary);
+}
+
+.btn-show:hover {
+  background-color: var(--primary-light);
+}
+
+.btn-edit {
+  background-color: var(--secondary);
+}
+
+.btn-edit:hover {
+  background-color: var(--highlight);
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+}
+
+/* Empty state if no videos exist */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  border-radius: 16px;
+  background-color: var(--bg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state h3 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+</style>
+<%= render 'layouts/navbar' %> 
+
+<div class="video-index">
+  <h2 class="page-title">Your Video Collection</h2>
+  <div class="video-grid">
+    <% if @videos.any? %>
       <% @videos.each do |video| %>
-        <div class="col-md-4 mb-4">
+        <div class="video-card-wrapper">
           <div class="video-card">
             <div class="video-thumbnail">
-              <%= image_tag video.thumbnail_url || 'default-thumbnail.jpg' %>
-              <div class="video-duration">-:--</div>
+              <% if video.files.attached? %>
+                <%= video_tag url_for(video.files.first), controls: true, class: 'video-player' %>
+              <% else %>
+                <div class="no-video">No Video Available</div>
+              <% end %>
             </div>
-            <div class="video-info">
-              <h5><%= link_to video.title, video %></h5>
-              <p class="text-muted"><%= time_ago_in_words(video.created_at) %> ago</p>
-              <div class="video-stats">
-                <span><i class="fas fa-eye"></i> <%= video.views_count %></span>
-                <span><i class="fas fa-share"></i> <%= video.shares_count %></span>
+
+            <div class="video-card-info">
+              <h3 class="video-title"><%= video.title %></h3>
+              <p class="video-description"><%= video.description.truncate(100) %></p>
+
+              <div class="video-actions">
+                <%= link_to 'Show', video_path(video), class: 'btn-action btn-show' %>
+                <%= link_to 'Edit', edit_video_path(video), class: 'btn-action btn-edit' %>
+                <%= link_to 'Delete', video_path(video), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-action btn-delete' %>
               </div>
             </div>
           </div>
         </div>
       <% end %>
-    </div>
-  <% else %>
-    <div class="alert alert-info">
-      You haven't created any videos yet. <%= link_to 'Create your first video now!', new_video_path %>
-    </div>
-  <% end %>
+    <% else %>
+      <div class="empty-state">
+        <h3>No Videos Yet</h3>
+        <p>Get started by uploading your first video</p>
+        <%= link_to 'Upload Video', new_video_path, class: 'upload-btn' %>
+      </div>
+    <% end %>
+  </div>
 </div>

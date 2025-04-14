@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_10_080204) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_14_085449) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -114,15 +114,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_10_080204) do
   end
 
   create_table "videos", force: :cascade do |t|
-    t.integer "user_id", null: false
     t.string "title"
     t.text "description"
-    t.string "thumbnail_url"
-    t.integer "views_count"
-    t.integer "shares_count"
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "views"
+    t.integer "views_count"
+    t.string "audience"
+    t.integer "age_restriction"
+    t.datetime "scheduled_at"
     t.index ["user_id"], name: "index_videos_on_user_id"
   end
 

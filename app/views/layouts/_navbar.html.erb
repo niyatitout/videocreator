@@ -263,7 +263,7 @@
           <%= link_to "My channel", "#how-it-works", class: "nav-link" %>
         </li>
         <li class="nav-item">
-          <%= link_to "My Videos", "#pricing", class: "nav-link" %>
+          <%= link_to "My Videos", videos_path, class: "nav-link" %>
         </li>
       </ul>
 
@@ -276,7 +276,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
               <li><%= link_to "My Account", edit_user_registration_path, class: "dropdown-item" %></li>
-              <li><%= link_to "My Videos", "#", class: "dropdown-item" %></li>
+              <li><%= link_to "My Videos", videos_path, class: "dropdown-item" %></li>
             <li>
               <%= link_to (current_user.channel.present? ? "My Channel" : "Create Channel"), 
               (current_user.channel.present? ? channel_path(current_user.channel) : new_channel_path), 
@@ -313,4 +313,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 </script>
 </body>
-</html>
+</html><%# 
+<!-- app/views/layouts/application.html.erb -->
+<%= link_to 'Your Videos', videos_path 
+<%= link_to 'Upload New Video', new_video_path %> 

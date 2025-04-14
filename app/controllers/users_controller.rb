@@ -23,10 +23,10 @@ end
 
 
   def dashboard
-    @videos_count = current_user.videos.count
-    @views_count = current_user.videos.sum(:views_count)
-    @shares_count = current_user.videos.sum(:shares_count)
-    @recent_videos = current_user.videos.limit(6)
+    # @videos_count = current_user.videos.count
+    # @views_count = current_user.videos.sum(:views_count)
+    # @shares_count = current_user.videos.sum(:shares_count)
+    # @recent_videos = current_user.videos.limit(6)
   end
   
 

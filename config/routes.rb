@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   end
 
   # Videos
-  resources :videos, only: [:index, :new, :create, :show, :edit, :update, :destroy]
+  resources :videos  # Set up routes for videos (index, show, new, create, etc.)
 
   # Channels
   resources :channels do

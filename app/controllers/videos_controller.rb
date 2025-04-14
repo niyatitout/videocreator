@@ -1,41 +1,43 @@
 class VideosController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!
   before_action :set_video, only: [:show, :edit, :update, :destroy]
 
   def index
-    @videos = current_user.videos if user_signed_in?
+    @videos = current_user.videos.order(created_at: :desc)
+  end
+
+  def show
   end
 
   def new
     @video = current_user.videos.new
   end
 
-  def create
-    @video = current_user.videos.new(video_params)
-    if @video.save
-      redirect_to @video, notice: 'Video was successfully created.'
-    else
-      render :new
-    end
+ def create
+  @video = current_user.videos.new(video_params)
+  
+  if @video.save
+    redirect_to videos_path, notice: "Video uploaded successfully."
+  else
+    render :new, status: :unprocessable_entity
   end
+end
 
-  def show
-  end
 
   def edit
   end
 
   def update
     if @video.update(video_params)
-      redirect_to @video, notice: 'Video was successfully updated.'
+      redirect_to @video, notice: "Video updated successfully."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @video.destroy
-    redirect_to videos_url, notice: 'Video was successfully destroyed.'
+    redirect_to videos_path, notice: "Video deleted successfully."
   end
 
   private
@@ -45,6 +47,6 @@ class VideosController < ApplicationController
   end
 
   def video_params
-    params.require(:video).permit(:title, :description, :thumbnail_url, :views_count, :shares_count)
+    params.require(:video).permit(:title, :description, :audience, :age_restriction, :scheduled_at, files: [])
   end
 end

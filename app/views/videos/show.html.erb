@@ -1,2 +1,127 @@
-<h1>Videos#show</h1>
-<p>Find me in app/views/videos/show.html.erb</p>
+<style> 
+/* Container for the video card */
+.video-card-wrapper {
+  max-width: 1200px;
+  margin: 40px auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Video card layout */
+.video-card {
+  width: 300px;
+  background-color: var(--bg);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 200px;
+  background: #eaeaea;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px 16px 0 0;
+}
+
+.video-thumbnail .video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-video {
+  text-align: center;
+  line-height: 200px;
+  color: #888;
+  font-size: 1.2rem;
+}
+
+.video-card-info {
+  padding: 20px;
+}
+
+.video-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.video-description {
+  color: var(--text-light);
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.video-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-action {
+  padding: 8px 15px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn-show {
+  background-color: var(--primary);
+}
+
+.btn-show:hover {
+  background-color: var(--primary-light);
+}
+
+.btn-edit {
+  background-color: var(--secondary);
+}
+
+.btn-edit:hover {
+  background-color: var(--highlight);
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+}
+
+</style> 
+<%= render 'layouts/navbar' %> 
+
+<div class="video-card-wrapper">
+  <div class="video-card">
+    <div class="video-thumbnail">
+      <% if @video.files.attached? %>
+        <%= video_tag url_for(@video.files.first), controls: true, class: 'video-player' %>
+      <% else %>
+        <div class="no-video">No Video Available</div>
+      <% end %>
+    </div>
+
+    <div class="video-card-info">
+      <h3 class="video-title"><%= @video.title %></h3>
+      <p class="video-description"><%= @video.description.truncate(100) %></p>
+
+      <div class="video-actions">
+        <%= link_to 'Show', video_path(@video), class: 'btn-action btn-show' %>
+        <%= link_to 'Edit', edit_video_path(@video), class: 'btn-action btn-edit' %>
+        <%= link_to 'Delete', video_path(@video), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-action btn-delete' %>
+      </div>
+    </div>
+  </div>
+</div>

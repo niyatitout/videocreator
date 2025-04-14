@@ -1,2 +1,33 @@
-<h1>Videos#edit</h1>
-<p>Find me in app/views/videos/edit.html.erb</p>
+<%= render 'layouts/navbar' %> 
+
+
+<h2>Edit Video</h2>
+
+<%= form_with model: @video, local: true do |form| %>
+  <div class="mb-3">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :audience %>
+    <%= form.select :audience, ['Public', 'Private'], {}, class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :age_restriction %>
+    <%= form.number_field :age_restriction, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :files %>
+    <%= form.file_field :files, multiple: true, class: "form-control" %>
+  </div>
+
+  <%= form.submit "Update Video", class: "btn btn-primary" %>
+<% end %>
