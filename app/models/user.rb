@@ -14,6 +14,11 @@ class User < ApplicationRecord
   has_many :videos, dependent: :destroy
   has_one :channel, dependent: :destroy
 
+  #likes and comments 
+  has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  
+
   # For avatar upload (if using Active Storage)
   has_one_attached :avatar
 

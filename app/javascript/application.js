@@ -3,3 +3,6 @@ import "@hotwired/turbo-rails"
 import "controllers"
 //= require jquery.validate
 // app/javascript/packs/application.js
+import { application } from "./application"
+import DescriptionController from "./description_controller"
+application.register("description", DescriptionController)

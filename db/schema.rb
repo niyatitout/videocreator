@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_14_085449) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_16_102501) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -65,6 +65,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_14_085449) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "categories_videos", id: false, force: :cascade do |t|
+    t.integer "category_id", null: false
+    t.integer "video_id", null: false
+  end
+
+  create_table "categorizations", force: :cascade do |t|
+    t.integer "video_id", null: false
+    t.integer "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_categorizations_on_category_id"
+    t.index ["video_id"], name: "index_categorizations_on_video_id"
+  end
+
   create_table "channel_members", force: :cascade do |t|
     t.integer "channel_id", null: false
     t.integer "user_id", null: false
@@ -85,6 +105,28 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_14_085449) do
     t.datetime "updated_at", null: false
     t.integer "visibility", default: 0, null: false
     t.index ["user_id"], name: "index_channels_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "video_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_comments_on_user_id"
+    t.index ["video_id"], name: "index_comments_on_video_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "likeable_type", null: false
+    t.integer "likeable_id", null: false
+    t.boolean "liked"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "video_id"
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -123,13 +165,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_14_085449) do
     t.string "audience"
     t.integer "age_restriction"
     t.datetime "scheduled_at"
+    t.integer "category_id"
+    t.index ["category_id"], name: "index_videos_on_category_id"
     t.index ["user_id"], name: "index_videos_on_user_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "categorizations", "categories"
+  add_foreign_key "categorizations", "videos"
   add_foreign_key "channel_members", "channels"
   add_foreign_key "channel_members", "users"
   add_foreign_key "channels", "users"
+  add_foreign_key "comments", "users"
+  add_foreign_key "comments", "videos"
+  add_foreign_key "likes", "users"
+  add_foreign_key "videos", "categories"
   add_foreign_key "videos", "users"
 end

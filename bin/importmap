@@ -3,3 +3,4 @@
 require_relative "../config/application"
 require "importmap/commands"
 require 'jquery-validation';
+pin_all_from "app/javascript/controllers", under: "controllers"

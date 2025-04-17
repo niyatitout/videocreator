@@ -7,3 +7,5 @@ Rails.application.config.assets.version = "1.0"
 # Rails.application.config.assets.paths << Emoji.images_path
 Rails.application.config.assets.precompile += %w( controllers/hello_controller.js )
 Rails.application.config.assets.precompile += %w( controllers/index.js )
+Rails.application.config.assets.precompile += %w( controllers/flash_controller.js )
+Rails.application.config.assets.precompile += %w( controllers/description_controller.js )

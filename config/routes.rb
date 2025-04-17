@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   end
 
   # Videos
-  resources :videos  # Set up routes for videos (index, show, new, create, etc.)
+resources :videos, only: [:show, :destroy , :new ]
 
   # Channels
   resources :channels do
@@ -50,4 +50,28 @@ Rails.application.routes.draw do
 
   # 2FA enable/disable routes (standalone resource)
   resources :two_factor_auths, only: [:new, :create, :destroy]
+
+
+  resources :videos do
+   resources :comments, only: [:create]
+  end
+
+
+  resources :videos do
+  collection do
+    get 'my', to: 'videos#my', as: :my
+  end
+end
+
+# config/routes.rb
+resources :videos do
+  collection do
+    get 'search'
+  end
+end
+
+ resources :likes, only: [:create, :destroy]
+
+
+  # post '/likes/toggle', to: 'likes#toggle', as: 'toggle_like'
 end

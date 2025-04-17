@@ -17,7 +17,8 @@ module Users
     end
 
     def after_sign_in_path_for(resource)
-      dashboard_users_path
+      # dashboard_users_path
+      videos_path
     end
 
     def verify_2fa
