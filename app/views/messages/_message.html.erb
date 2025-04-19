@@ -1,0 +1,8 @@
+<div class="bg-white p-2 rounded shadow">
+  <strong><%= message.user.email %>:</strong>
+  <%= message.content %>
+
+  <% if message.user == current_user %>
+    <span class="text-xs text-gray-400">(You)</span>
+  <% end %>
+</div>

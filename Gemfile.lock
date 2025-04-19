@@ -1,3 +1,9 @@
+PATH
+  remote: ../chat_engine
+  specs:
+    chat_engine (0.1.0)
+      rails (>= 8.0.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -507,6 +513,7 @@ DEPENDENCIES
   bootsnap
   brakeman
   capybara
+  chat_engine!
   debug
   devise (~> 4.9.2)
   devise-two-factor

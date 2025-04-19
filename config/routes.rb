@@ -71,7 +71,11 @@ resources :videos do
 end
 
  resources :likes, only: [:create, :destroy]
+ mount ChatEngine::Engine => "/chat"
 
-
+ resources :rooms do
+    resources :messages, only: [:create]
+  end
+  
   # post '/likes/toggle', to: 'likes#toggle', as: 'toggle_like'
 end

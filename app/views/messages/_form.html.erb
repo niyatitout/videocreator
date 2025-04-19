@@ -1,0 +1,22 @@
+<%= form_with model: [room, Message.new], data: { controller: "emoji-picker", turbo_frame: "_top" } do |f| %>
+  <div class="flex items-center gap-2">
+    <div class="relative flex-1">
+      <%= f.text_field :content, 
+            placeholder: "Type your message...", 
+            class: "w-full p-2 border rounded-lg",
+            data: { emoji_picker_target: "input" } %>
+      
+      <button type="button" 
+              data-action="emoji-picker#toggle" 
+              class="absolute right-2 top-2 text-gray-500 hover:text-gray-700">
+        😊
+      </button>
+      
+      <div data-emoji-picker-target="picker" class="hidden absolute bottom-full mb-2 right-0 bg-white border rounded-lg shadow-lg p-2 w-64 h-64 overflow-y-auto">
+        <!-- Emoji picker will be inserted here by JavaScript -->
+      </div>
+    </div>
+    
+    <%= f.submit "Send", class: "px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" %>
+  </div>
+<% end %>

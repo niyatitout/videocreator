@@ -86,3 +86,5 @@ gem 'sass-rails'
 gem 'rotp'       # For TOTP (Time-Based OTP)
 gem 'rqrcode'    # For QR code generation
 gem 'devise-two-factor' # Optional but helpful
+
+gem 'chat_engine', path: '../chat_engine'

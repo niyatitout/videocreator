@@ -393,7 +393,8 @@
           </li>
           
           <!-- HTML !-->
-<button class="button-3" role="button"> Chat</button>
+          <%= link_to "💬 Chat", rooms_path, data: { turbo_frame: "main_content" }, class: "button-3" %>
+
 
         <% else %>
           <li class="nav-item">

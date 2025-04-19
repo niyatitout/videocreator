@@ -1,0 +1,12 @@
+ <%= render 'layouts/navbar' %>
+ <% content_for :title, "New room" %>
+<hr>
+<h1>New room</h1>
+
+<%= render "form", room: @room %>
+
+<br>
+
+<div>
+  <%= link_to "Back to rooms", rooms_path %>
+</div>
