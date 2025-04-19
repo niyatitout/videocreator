@@ -4,3 +4,4 @@ require_relative "../config/application"
 require "importmap/commands"
 require 'jquery-validation';
 pin_all_from "app/javascript/controllers", under: "controllers"
+pin "emoji-button", to: "https://ga.jspm.io/npm:emoji-button@4.6.4/dist/index.js"
